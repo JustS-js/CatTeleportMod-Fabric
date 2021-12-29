@@ -11,7 +11,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
@@ -19,9 +18,9 @@ public class ReconnectThread extends Thread {
     private final int secondsToReconnect;
     private final ServerAddress serverAddress;
 
-    public ReconnectThread(ServerInfo serverInfo, int secondsToReconnect) {
+    public ReconnectThread(ServerInfo serverInfo, int start, int end) {
         super();
-        this.secondsToReconnect = secondsToReconnect;
+        this.secondsToReconnect = (end - start) / 2 + start;
         this.serverAddress = ServerAddress.parse(serverInfo.address);
     }
 

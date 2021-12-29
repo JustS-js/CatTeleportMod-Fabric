@@ -3,11 +3,11 @@ package net.just_s.ctpmod.config;
 import me.shedaniel.clothconfig2.api.*;
 import net.just_s.ctpmod.CTPMod;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.LiteralText;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ConfigScreen {
     public static ConfigCategory mainCategory;

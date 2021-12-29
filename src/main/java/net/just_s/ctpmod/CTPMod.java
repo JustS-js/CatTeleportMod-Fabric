@@ -1,13 +1,12 @@
 package net.just_s.ctpmod;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.just_s.ctpmod.config.ConfigParser;
 import net.just_s.ctpmod.config.Point;
 import net.just_s.ctpmod.util.ReconnectThread;
-import net.minecraft.client.gui.screen.ConnectScreen;
-import net.minecraft.client.gui.screen.DisconnectedScreen;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.network.ServerAddress;
@@ -20,6 +19,7 @@ import net.minecraft.client.MinecraftClient;
 
 import java.util.Objects;
 
+@Environment(EnvType.CLIENT)
 public class CTPMod implements ClientModInitializer {
 	public static final String MOD_ID = "ctpmod";
 	public static final MinecraftClient MC = MinecraftClient.getInstance();
@@ -132,10 +132,12 @@ public class CTPMod implements ClientModInitializer {
 		Objects.requireNonNull(MC.getNetworkHandler()).getConnection().disconnect(
 				new LiteralText("§8[§6CatTeleport§8]"));
 		MC.disconnect();
-		reconnectThread = new ReconnectThread(server, point.getStartPeriod());
+		reconnectThread = new ReconnectThread(server, point.getStartPeriod(), point.getEndPeriod());
 		reconnectThread.start();
-		Screen newScr = new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("startReconnect"));
-		//Screen newScr =  new MultiplayerScreen(new TitleScreen());
+		Screen newScr = new DisconnectedScreen(
+				new MultiplayerScreen(new TitleScreen()),
+				new LiteralText("§8[§6CatTeleport§8]"),
+				new LiteralText("startReconnect"));
 		MC.setScreen(newScr);
 	}
 
