@@ -26,7 +26,6 @@ public class CTPMod implements ClientModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	public static Point[] points = new Point[0];
 	public static final ConfigParser config = ConfigParser.INSTANCE;
-	public int ticks = -1;
 	public static ServerInfo server = null;
 	public static CTPMod INSTANCE = new CTPMod();
 	private ReconnectThread reconnectThread;
@@ -99,9 +98,30 @@ public class CTPMod implements ClientModInitializer {
 				printInGame("§cThere is no §fPoint §cwith name \"§f" + args[1] + "§c\".");
 				return;
 			}
+			if (curPoint.getStartPeriod() < 0) {
+				printInGame("§cCan't teleport to §fPoint §cwith negative §fstartPeriodTime§c.");
+				return;
+			}
 
 			//if everything is okay, only then start reconnect cycle:
 			startReconnect(curPoint);
+		} else {
+			printInGame("§cCTPMod doesn't work in §4SinglePlayer§c. You can use §dNether Portals§c instead of rejoining.");
+		}
+	}
+
+	public void rawTp(String[] args) {
+		if (!MC.isInSingleplayer()) {
+			if (args.length != 2) {throw new IllegalArgumentException("Too much or not enough arguments.");}
+			int time = Integer.parseInt(args[1]);
+
+			if (time < 0) {
+				printInGame("§cCan't reconnect with negative §fstartPeriodTime§c.");
+				return;
+			}
+
+			//if everything is okay, only then start reconnect cycle:
+			startReconnect(new Point("null", time, 0));
 		} else {
 			printInGame("§cCTPMod doesn't work in §4SinglePlayer§c. You can use §dNether Portals§c instead of rejoining.");
 		}
@@ -114,9 +134,8 @@ public class CTPMod implements ClientModInitializer {
 		MC.disconnect();
 		reconnectThread = new ReconnectThread(server, point.getStartPeriod());
 		reconnectThread.start();
-		//Screen newScr = new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("startReconnect"));
-		Screen newScr =  new MultiplayerScreen(new TitleScreen());
-		LOGGER.info(newScr.toString());
+		Screen newScr = new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("startReconnect"));
+		//Screen newScr =  new MultiplayerScreen(new TitleScreen());
 		MC.setScreen(newScr);
 	}
 

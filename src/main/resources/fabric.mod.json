@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "ctpmod",
   "version": "${version}",
-
   "name": "CatTeleport Mod",
   "description": "This mod allows you to rejoin any server in set period of time.",
   "authors": [
@@ -14,10 +13,13 @@
   "license": "MIT",
   "icon": "assets/ctpmod/icon.png",
 
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "net.just_s.ctpmod.CTPMod"
+    ],
+    "modmenu": [
+      "net.just_s.ctpmod.config.ModMenuIntegration"
     ]
   },
   "mixins": [

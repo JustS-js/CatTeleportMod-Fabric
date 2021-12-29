@@ -6,9 +6,13 @@ import net.just_s.ctpmod.CTPMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerAddress;
 import net.minecraft.client.network.ServerInfo;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class ReconnectThread extends Thread {
@@ -27,7 +31,8 @@ public class ReconnectThread extends Thread {
     @Override
     public void run() {
         try {
-            Thread.sleep((secondsToReconnect - 1) * 1000L);
+            int[] s = {secondsToReconnect - 1, 0};
+            Thread.sleep(Collections.max(Arrays.asList(ArrayUtils.toObject(s))) * 1000L);
             for (int i1 = 0; i1 < 10; i1++) {
                 pingServer();
             }

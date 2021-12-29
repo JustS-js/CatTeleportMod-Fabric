@@ -13,6 +13,7 @@ public class CMDHandler {
                 case "del" -> mod.delPoint(args);
                 case "tp" -> mod.teleport(args);
                 case "list" -> mod.listPoints();
+                case "rc" -> mod.rawTp(args);
             }
             error = true;
         }

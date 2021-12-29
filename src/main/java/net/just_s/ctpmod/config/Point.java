@@ -18,6 +18,8 @@ public class Point {
 
     public String getName() {return this.name;}
 
+    public void setName(String newName) {this.name = newName;}
+
     public String toJson() {
         Map<String, String> point = new HashMap<>();
         point.put("name", this.name);
@@ -30,6 +32,14 @@ public class Point {
     @Override
     public String toString() {
         return "Point §f" + name + " §2with period: §f" + startPeriod + "-" + endPeriod + "§2.";
+    }
+
+    public void setStartPeriod(int value) {
+        this.startPeriod = value;
+    }
+
+    public void setEndPeriod(int value) {
+        this.endPeriod = value;
     }
 
     public int getStartPeriod() {
