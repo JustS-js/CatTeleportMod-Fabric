@@ -65,11 +65,12 @@ public class ConfigParser {
     }
 
     public void load() {
-        CTPMod.LOGGER.error("Loading config...");
+        CTPMod.LOGGER.debug("Loading config...");
         if (file.exists()) {
             try {
                 String json_string = Files.readString(Path.of(file.toString()), StandardCharsets.US_ASCII);
-                CTPMod.points = fromJson(json_string);
+                CTPMod.delta = deltaFromJson(json_string);
+                CTPMod.points = pointsFromJson(json_string);
             } catch (Exception e) {
                 CTPMod.LOGGER.error("Could not load config from file '" + file.getAbsolutePath() + "'", e);
             }
@@ -78,7 +79,7 @@ public class ConfigParser {
     }
 
     public void save() {
-        CTPMod.LOGGER.error("Saving config...");
+        CTPMod.LOGGER.debug("Saving config...");
         try (FileWriter writer = new FileWriter(file)) {
             writer.write(toJson());
         } catch (Exception e) {
@@ -86,21 +87,27 @@ public class ConfigParser {
         }
     }
 
-    protected Point[] fromJson(String json_string) {
-        CTPMod.LOGGER.error("fromJson: " + json_string );
-        JsonArray object = JsonParser.parseString(json_string).getAsJsonArray();
-        String newJSONString = object.toString();
+    protected int deltaFromJson(String json_string) {
+        //CTPMod.LOGGER.error("fromJson: " + json_string );
+        JsonObject object = JsonParser.parseString(json_string).getAsJsonObject();
+        return object.getAsJsonPrimitive("delta").getAsInt();
+    }
+
+    protected Point[] pointsFromJson(String json_string) {
+        //CTPMod.LOGGER.error("fromJson: " + json_string );
+        JsonObject object = JsonParser.parseString(json_string).getAsJsonObject();
+        String newJSONString = object.getAsJsonArray("points").toString();
         return GSON.fromJson(newJSONString, Point[].class);
     }
 
 
     protected String toJson(){
-        CTPMod.LOGGER.error(Arrays.toString(CTPMod.points));
+        //CTPMod.LOGGER.error(Arrays.toString(CTPMod.points));
         Point[] points = CTPMod.points;
         String[] jsonReprOfPoints = new String[points.length];
         for(int i = 0; i < points.length; i++) {
             jsonReprOfPoints[i] = points[i].toJson();
         }
-        return "[" + String.join(",", jsonReprOfPoints)+ "]";
+        return "{\"delta\":" + CTPMod.delta + ", \"points\":[" + String.join(",", jsonReprOfPoints)+ "]}";
     }
 }

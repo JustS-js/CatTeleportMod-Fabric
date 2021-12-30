@@ -27,6 +27,12 @@ public class ConfigScreen {
         mainCategory = builder.getOrCreateCategory(new LiteralText("Null"));
         // entryBuilder - это билдер значения в точке
         entryBuilder = builder.entryBuilder();
+
+        mainCategory.addEntry(entryBuilder.startIntField(new LiteralText("Delta"), CTPMod.delta)
+                        .setDefaultValue(1)
+                        .setTooltip(new LiteralText("Amount of seconds between server and client (can be negative)"))
+                        .setSaveConsumer(newValue -> CTPMod.delta = newValue)
+                .build());
         for(int i=0; i < CTPMod.points.length; i++) {
             createOption(i);
         }

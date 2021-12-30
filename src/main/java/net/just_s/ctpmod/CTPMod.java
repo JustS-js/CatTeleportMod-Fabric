@@ -25,6 +25,7 @@ public class CTPMod implements ClientModInitializer {
 	public static final MinecraftClient MC = MinecraftClient.getInstance();
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 	public static Point[] points = new Point[0];
+	public static int delta = 0;
 	public static final ConfigParser config = ConfigParser.INSTANCE;
 	public static ServerInfo server = null;
 	public static CTPMod INSTANCE = new CTPMod();
@@ -121,7 +122,7 @@ public class CTPMod implements ClientModInitializer {
 			}
 
 			//if everything is okay, only then start reconnect cycle:
-			startReconnect(new Point("null", time, 0));
+			startReconnect(new Point("null", time, time));
 		} else {
 			printInGame("§cCTPMod doesn't work in §4SinglePlayer§c. You can use §dNether Portals§c instead of rejoining.");
 		}

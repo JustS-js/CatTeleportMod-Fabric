@@ -30,7 +30,8 @@ public class ReconnectThread extends Thread {
     @Override
     public void run() {
         try {
-            int[] s = {secondsToReconnect - 1, 0};
+            int[] s = {secondsToReconnect - CTPMod.delta, 0};
+            CTPMod.LOGGER.debug("reconnect in " + Collections.max(Arrays.asList(ArrayUtils.toObject(s))) + " sec");
             Thread.sleep(Collections.max(Arrays.asList(ArrayUtils.toObject(s))) * 1000L);
             for (int i1 = 0; i1 < 10; i1++) {
                 pingServer();
