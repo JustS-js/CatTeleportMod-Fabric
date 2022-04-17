@@ -34,7 +34,6 @@ public class CTPMod implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		LOGGER.info("Hello Fabric world!");
 	}
 
 	public void listPoints() {
@@ -149,7 +148,7 @@ public class CTPMod implements ClientModInitializer {
 	public void cancelReconnect() {
 		try {
 			reconnectThread.join();
-		} catch (InterruptedException ignored) {
+		} catch (InterruptedException | NullPointerException ignored) {
 		}
 		LOGGER.info("Reconnecting cancelled.");
 		MC.setScreen(new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("cancelReconnect")));

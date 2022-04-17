@@ -31,7 +31,7 @@ public class ReconnectThread extends Thread {
     public void run() {
         try {
             int[] s = {secondsToReconnect - CTPMod.delta, 0};
-            CTPMod.LOGGER.debug("reconnect in " + Collections.max(Arrays.asList(ArrayUtils.toObject(s))) + " sec");
+            CTPMod.LOGGER.info("reconnect in " + Collections.max(Arrays.asList(ArrayUtils.toObject(s))) + " sec");
             Thread.sleep(Collections.max(Arrays.asList(ArrayUtils.toObject(s))) * 1000L);
             for (int i1 = 0; i1 < 10; i1++) {
                 pingServer();
@@ -42,7 +42,7 @@ public class ReconnectThread extends Thread {
             }
             return;
         } catch (IOException | InterruptedException e) {
-            CTPMod.LOGGER.debug("Reconnection failed. Reason: " + e.getMessage());
+            CTPMod.LOGGER.error("Reconnection failed. Reason: " + e.getMessage());
         }
         MinecraftClient.getInstance().execute(() -> CTPMod.INSTANCE.cancelReconnect());
     }
