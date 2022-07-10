@@ -9,9 +9,9 @@ import net.just_s.ctpmod.util.ReconnectThread;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
+import net.minecraft.network.message.MessageType;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.client.network.ServerAddress;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.LiteralText;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -130,14 +130,14 @@ public class CTPMod implements ClientModInitializer {
 	public void startReconnect(Point point) {
 		server = MC.getCurrentServerEntry();
 		Objects.requireNonNull(MC.getNetworkHandler()).getConnection().disconnect(
-				new LiteralText("§8[§6CatTeleport§8]"));
+				new LiteralTextContent("§8[§6CatTeleport§8]"));
 		MC.disconnect();
 		reconnectThread = new ReconnectThread(server, point.getStartPeriod(), point.getEndPeriod());
 		reconnectThread.start();
 		Screen newScr = new DisconnectedScreen(
 				new MultiplayerScreen(new TitleScreen()),
-				new LiteralText("§8[§6CatTeleport§8]"),
-				new LiteralText("startReconnect"));
+				new LiteralTextContent("§8[§6CatTeleport§8]"),
+				new LiteralTextContent("startReconnect"));
 		MC.setScreen(newScr);
 	}
 
@@ -151,7 +151,7 @@ public class CTPMod implements ClientModInitializer {
 		} catch (InterruptedException | NullPointerException ignored) {
 		}
 		LOGGER.info("Reconnecting cancelled.");
-		MC.setScreen(new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("cancelReconnect")));
+		MC.setScreen(new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralTextContent("§8[§6CatTeleport§8]"), new LiteralTextContent("cancelReconnect")));
 	}
 
 	public void connectToServer(ServerInfo targetInfo) {
@@ -167,6 +167,6 @@ public class CTPMod implements ClientModInitializer {
 		//§4  dark_red		§c	red				§6	gold
 		//§5  dark_purple	§d	light_purple
 		String msg = String.join(", ", msgargs);
-		MC.inGameHud.addChatMessage(MessageType.SYSTEM, new LiteralText("§8[§6CatTeleport§8]§2 " + msg), MC.player.getUuid());
+		MC.inGameHud.addChatMessage(MessageType.SYSTEM, new LiteralTextContent("§8[§6CatTeleport§8]§2 " + msg), MC.player.getUuid());
 	}
 }
