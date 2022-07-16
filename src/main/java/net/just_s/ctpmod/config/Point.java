@@ -9,7 +9,6 @@ public class Point {
     private int startPeriod;
     private int endPeriod;
 
-    public Point() {}
     public Point(String name, int startPeriod, int endPeriod) {
         this.name = name;
         this.startPeriod = startPeriod;

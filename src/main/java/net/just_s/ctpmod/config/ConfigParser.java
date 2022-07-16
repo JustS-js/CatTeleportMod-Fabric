@@ -7,14 +7,12 @@ import net.just_s.ctpmod.CTPMod;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Objects;
 
 public class ConfigParser {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    protected static final JsonParser PARSER = new JsonParser();
 
     public static final ConfigParser INSTANCE = new ConfigParser(FabricLoader.getInstance().getConfigDir().resolve("ctpmod.json").toFile());
     static {
@@ -89,13 +87,15 @@ public class ConfigParser {
 
     protected int deltaFromJson(String json_string) {
         //CTPMod.LOGGER.error("fromJson: " + json_string );
-        JsonObject object = JsonParser.parseString(json_string).getAsJsonObject();
+        JsonParser jsparser = new JsonParser();
+        JsonObject object = jsparser.parse(json_string).getAsJsonObject();
         return object.getAsJsonPrimitive("delta").getAsInt();
     }
 
     protected Point[] pointsFromJson(String json_string) {
         //CTPMod.LOGGER.error("fromJson: " + json_string );
-        JsonObject object = JsonParser.parseString(json_string).getAsJsonObject();
+        JsonParser jsparser = new JsonParser();
+        JsonObject object = jsparser.parse(json_string).getAsJsonObject();
         String newJSONString = object.getAsJsonArray("points").toString();
         return GSON.fromJson(newJSONString, Point[].class);
     }

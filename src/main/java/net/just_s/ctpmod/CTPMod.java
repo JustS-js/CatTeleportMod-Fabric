@@ -10,8 +10,8 @@ import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.network.ServerAddress;
-import net.minecraft.network.MessageType;
-import net.minecraft.text.LiteralText;
+import net.minecraft.network.ClientConnection;
+import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -128,17 +128,20 @@ public class CTPMod implements ClientModInitializer {
 	}
 
 	public void startReconnect(Point point) {
-		server = MC.getCurrentServerEntry();
-		Objects.requireNonNull(MC.getNetworkHandler()).getConnection().disconnect(
-				new LiteralText("§8[§6CatTeleport§8]"));
-		MC.disconnect();
-		reconnectThread = new ReconnectThread(server, point.getStartPeriod(), point.getEndPeriod());
-		reconnectThread.start();
 		Screen newScr = new DisconnectedScreen(
 				new MultiplayerScreen(new TitleScreen()),
-				new LiteralText("§8[§6CatTeleport§8]"),
-				new LiteralText("startReconnect"));
-		MC.setScreen(newScr);
+				Text.of("§8[§6CatTeleport§8]"),
+				Text.of("startReconnect"));
+
+		server = MC.getCurrentServerEntry();
+		ClientConnection con = Objects.requireNonNull(MC.getNetworkHandler()).getConnection();
+		//con.disconnect(new LiteralText("§8[§6CatTeleport§8]"));
+
+		reconnectThread = new ReconnectThread(server, point.getStartPeriod(), point.getEndPeriod());
+		reconnectThread.start();
+
+		newScr.init(MC, 0, 0);
+		MC.disconnect(newScr);
 	}
 
 	public void finishReconnect() {
@@ -151,7 +154,7 @@ public class CTPMod implements ClientModInitializer {
 		} catch (InterruptedException | NullPointerException ignored) {
 		}
 		LOGGER.info("Reconnecting cancelled.");
-		MC.setScreen(new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), new LiteralText("§8[§6CatTeleport§8]"), new LiteralText("cancelReconnect")));
+		MC.setScreen(new DisconnectedScreen(new MultiplayerScreen(new TitleScreen()), Text.of("§8[§6CatTeleport§8]"), Text.of("cancelReconnect")));
 	}
 
 	public void connectToServer(ServerInfo targetInfo) {
@@ -167,6 +170,6 @@ public class CTPMod implements ClientModInitializer {
 		//§4  dark_red		§c	red				§6	gold
 		//§5  dark_purple	§d	light_purple
 		String msg = String.join(", ", msgargs);
-		MC.inGameHud.addChatMessage(MessageType.SYSTEM, new LiteralText("§8[§6CatTeleport§8]§2 " + msg), MC.player.getUuid());
+		MC.inGameHud.getChatHud().addMessage(Text.of("§8[§6CatTeleport§8]§2 " + msg));
 	}
 }
