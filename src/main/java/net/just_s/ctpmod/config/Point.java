@@ -1,6 +1,8 @@
 package net.just_s.ctpmod.config;
 
 import com.google.gson.Gson;
+
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ public class Point {
     private int startPeriod;
     private int endPeriod;
 
-    public Point(String name, int startPeriod, int endPeriod) {
+    public Point(@Nullable String name, int startPeriod, int endPeriod) {
         this.name = name;
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;

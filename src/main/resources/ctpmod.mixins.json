@@ -2,11 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.just_s.ctpmod.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [],
-  "client": [
-    "CTPMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

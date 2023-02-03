@@ -16,12 +16,10 @@ import java.util.Collections;
 @Environment(EnvType.CLIENT)
 public class ReconnectThread extends Thread {
     private final int secondsToReconnect;
-    private final ServerAddress serverAddress;
 
-    public ReconnectThread(ServerInfo serverInfo, int start, int end) {
+    public ReconnectThread(int start, int end) {
         super();
         this.secondsToReconnect = (end - start) / 2 + start;
-        this.serverAddress = ServerAddress.parse(serverInfo.address);
     }
 
     /**
@@ -34,26 +32,14 @@ public class ReconnectThread extends Thread {
             CTPMod.LOGGER.info("reconnect in " + Collections.max(Arrays.asList(ArrayUtils.toObject(s))) + " sec");
 
             Thread.sleep((Collections.max(Arrays.asList(ArrayUtils.toObject(s)))) * 1000L);
-            for (int i1 = 0; i1 < 10; i1++) {
-                pingServer();
-            }
             synchronized (this) {
                 CTPMod.LOGGER.info("Reconnecting to server.");
-                MinecraftClient.getInstance().execute(() -> CTPMod.INSTANCE.finishReconnect());
+                MinecraftClient.getInstance().execute(CTPMod.INSTANCE::finishReconnect);
             }
             return;
-        } catch (IOException | InterruptedException e) {
-            CTPMod.LOGGER.error("Reconnection failed. Reason: " + e.getMessage());
+        } catch (/*IOException* |*/ InterruptedException e) {
+            CTPMod.LOGGER.error("Reconnection failed. Reason: " + e);
         }
-        MinecraftClient.getInstance().execute(() -> CTPMod.INSTANCE.cancelReconnect());
-    }
-
-    private void pingServer() throws IOException, InterruptedException {
-        long startTime = System.nanoTime();
-        Socket connectionSocket = new Socket(serverAddress.getAddress(), serverAddress.getPort());
-        connectionSocket.close();
-        long endTime = System.nanoTime();
-        if (endTime - startTime > 2 * 1e+9)
-            throw new IOException("Ping was greater than five seconds, being " + (endTime - startTime) * 1e-9);
+        MinecraftClient.getInstance().execute(CTPMod.INSTANCE::cancelReconnect);
     }
 }
