@@ -4,12 +4,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.just_s.ctpmod.CTPMod;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ServerAddress;
-import net.minecraft.client.network.ServerInfo;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collections;
 

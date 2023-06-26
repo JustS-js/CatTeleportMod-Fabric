@@ -70,7 +70,7 @@ public class CTPMod implements ClientModInitializer {
 	}
 
 	public void connectToServer(ServerInfo targetInfo) {
-		ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), MC, ServerAddress.parse(targetInfo.address), targetInfo);
+		ConnectScreen.connect(new MultiplayerScreen(new TitleScreen()), MC, ServerAddress.parse(targetInfo.address), targetInfo, false);
 	}
 
 	public static Text generateFeedback(String message, Object... args) {
